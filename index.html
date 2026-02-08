@@ -414,6 +414,7 @@
                                 <div><h3 class="font-bold text-gray-700 text-sm">Pressure</h3><p class="text-[10px] text-gray-400 font-mono">∝ Hz² (Square)</p></div>
                             </div>
                             <div class="mt-4"><span class="text-3xl font-bold text-orange-600" id="resPressure">5024.00</span><span class="text-xs text-gray-400 ml-1">Pa</span></div>
+                            <div class="text-[11px] text-gray-400 font-mono mt-1">≈ <span id="resPressureBar">0.05</span> bar</div>
                             </div>
                             <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
                             <span class="text-xs text-gray-400">Square</span>
@@ -516,8 +517,11 @@
                     <!-- Graph -->
                     <div class="lg:col-span-2">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px] flex flex-col h-full">
-                            <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2"><i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i> กราฟความสัมพันธ์</h3>
-                            <div class="w-full relative flex-grow bg-slate-50 rounded-lg overflow-hidden" id="vfdChartContainer">
+                            <h3 class="font-bold text-blue-800 mb-6 flex items-center gap-2">
+                                <span class="p-2 rounded-lg bg-blue-50 text-blue-600"><i data-lucide="line-chart" class="w-5 h-5"></i></span>
+                                กราฟความสัมพันธ์ (Performance Curve)
+                            </h3>
+                            <div class="w-full relative flex-grow bg-slate-50 rounded-lg overflow-hidden border border-slate-100" id="vfdChartContainer">
                                 <!-- SVG Chart will be injected here -->
                             </div>
                                 <div class="mt-4 flex justify-center gap-6 text-sm">
@@ -529,167 +533,168 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
+        <!-- Added missing closing div above for view-vfd -->
 
-        <!-- ================= 4. COST ANALYSIS VIEW (NEW STANDALONE) ================= -->
+        <!-- ================= 4. COST ANALYSIS VIEW ================= -->
         <div id="view-cost" class="hidden fade-in">
              <!-- Cost Header -->
              <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mb-6">
                 <div class="p-6 border-l-8 border-green-600 bg-white">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">
-                                วิเคราะห์ความคุ้มค่า (Cost Analysis)
-                            </h2>
-                            <p class="text-gray-600 text-sm">
-                                คำนวณจุดคุ้มทุนและพลังงานที่ประหยัดได้
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COST ANALYSIS CONTENT -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Inputs -->
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-100">
-                        <div class="flex items-center gap-2 mb-6 text-green-700">
-                            <i data-lucide="calculator" class="w-6 h-6"></i>
-                            <h2 class="font-bold text-xl">พารามิเตอร์การทำงาน</h2>
-                        </div>
-                        <div class="space-y-5">
-                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">ชั่วโมงทำงานต่อวัน</label>
-                                <div class="relative">
-                                    <input type="number" id="costHours" value="24" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
-                                    <span class="absolute right-4 top-3.5 text-gray-400 text-sm">ชม.</span>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-start">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">วันทำงานต่อปี</label>
-                                <div class="relative">
-                                    <input type="number" id="costDays" value="300" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
-                                    <span class="absolute right-4 top-3.5 text-gray-400 text-sm">วัน</span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">ค่าไฟต่อหน่วย (THB/Unit)</label>
-                                <div class="relative">
-                                    <input type="number" id="costUnit" value="3.99" step="0.01" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
-                                    <span class="absolute right-4 top-3.5 text-gray-400 text-sm">บาท</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-8 p-4 bg-gray-50 rounded-xl text-sm text-gray-500 border border-gray-100">
-                            <div class="flex justify-between mb-2">
-                                <span>Base Power (50Hz):</span>
-                                <span class="font-semibold text-gray-700" id="infoBasePower">75.00 kW</span>
-                            </div>
-                             <div class="flex justify-between">
-                                <span>Target Power (<span id="infoTargetFreq">40</span>Hz):</span>
-                                <span class="font-semibold text-green-600" id="infoTargetPower">38.40 kW</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Analysis Dashboard -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Savings Banner -->
-                    <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl shadow-lg p-6 md:p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                        <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div>
-                                <h3 class="text-green-100 font-medium mb-1 flex items-center gap-2">
-                                    <i data-lucide="piggy-bank" class="w-5 h-5"></i> ประหยัดค่าไฟได้ (Annual Savings)
-                                </h3>
-                                <div class="text-4xl md:text-6xl font-bold tracking-tight">
-                                    <span id="txtSavingYear">1,185,840</span>
-                                    <span class="text-2xl md:text-3xl font-normal opacity-80 ml-2">บาท/ปี</span>
-                                </div>
-                                <p class="mt-2 text-green-100 opacity-90">
-                                    ลดลง <span class="font-bold bg-white/20 px-2 py-0.5 rounded" id="txtSavingPct">48.8%</span> เมื่อเทียบกับ Base Line
+                                <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                                    วิเคราะห์ความคุ้มค่า (Cost Analysis)
+                                </h2>
+                                <p class="text-gray-600 text-sm">
+                                    คำนวณจุดคุ้มทุนและพลังงานที่ประหยัดได้
                                 </p>
                             </div>
-                            <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center min-w-[180px]">
-                                <div class="text-xs text-green-100 uppercase tracking-wider mb-1">พลังงานที่ลดได้</div>
-                                <div class="text-2xl font-bold" id="txtEnergySaved">263,520</div>
-                                <div class="text-xs text-green-200">kWh / ปี</div>
-                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Comparison Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Baseline -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-500">BASELINE (50Hz)</h3>
-                                <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"><span id="txtBaseFreq">50</span> Hz</span>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Inputs -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-100">
+                            <div class="flex items-center gap-2 mb-6 text-green-700">
+                                <i data-lucide="calculator" class="w-6 h-6"></i>
+                                <h2 class="font-bold text-xl">พารามิเตอร์การทำงาน</h2>
                             </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-end">
-                                    <span class="text-sm text-gray-600">ค่าไฟต่อเดือน</span>
-                                    <div class="text-right">
-                                        <div class="font-bold text-base text-gray-800" id="txtBaseCostMonth">202,500</div>
-                                        <div class="text-[10px] text-gray-400">บาท</div>
+                            <div class="space-y-5">
+                                 <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">ชั่วโมงทำงานต่อวัน</label>
+                                    <div class="relative">
+                                        <input type="number" id="costHours" value="24" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
+                                        <span class="absolute right-4 top-3.5 text-gray-400 text-sm">ชม.</span>
                                     </div>
                                 </div>
-                                <div class="flex justify-between items-end pt-3 border-t border-gray-100">
-                                    <span class="text-sm text-gray-600">ค่าไฟต่อปี</span>
-                                    <div class="text-right">
-                                        <div class="font-bold text-xl text-gray-800" id="txtBaseCostYear">2,430,000</div>
-                                        <div class="text-[10px] text-gray-400">บาท</div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">วันทำงานต่อปี</label>
+                                    <div class="relative">
+                                        <input type="number" id="costDays" value="300" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
+                                        <span class="absolute right-4 top-3.5 text-gray-400 text-sm">วัน</span>
                                     </div>
                                 </div>
-                                <div class="flex justify-between items-end">
-                                    <span class="text-xs text-gray-400">พลังงานไฟฟ้า</span>
-                                    <div class="text-right">
-                                        <div class="font-normal text-sm text-gray-400" id="txtBaseEnergy">540,000</div>
-                                        <div class="text-[10px] text-gray-400">kWh</div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">ค่าไฟต่อหน่วย (THB/Unit)</label>
+                                    <div class="relative">
+                                        <input type="number" id="costUnit" value="3.99" step="0.01" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none text-right pr-12 text-lg font-semibold" oninput="calculateVFD()">
+                                        <span class="absolute right-4 top-3.5 text-gray-400 text-sm">บาท</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Target -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-green-500 relative">
-                             <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">แนะนำ</div>
-                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-green-700">TARGET (<span id="txtTargetFreq">50</span>Hz)</h3>
-                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"><span id="txtTargetFreq2">50</span> Hz</span>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-end">
-                                    <span class="text-sm text-gray-600">ค่าไฟต่อเดือน</span>
-                                    <div class="text-right">
-                                        <div class="font-bold text-base text-green-600" id="txtTargetCostMonth">103,680</div>
-                                        <div class="text-[10px] text-gray-400">บาท</div>
-                                    </div>
+                            <div class="mt-8 p-4 bg-gray-50 rounded-xl text-sm text-gray-500 border border-gray-100">
+                                <div class="flex justify-between mb-2">
+                                    <span>Base Power (50Hz):</span>
+                                    <span class="font-semibold text-gray-700" id="infoBasePower">75.00 kW</span>
                                 </div>
-                                <div class="flex justify-between items-end pt-3 border-t border-gray-100">
-                                    <span class="text-sm text-gray-600">ค่าไฟต่อปี</span>
-                                    <div class="text-right">
-                                        <div class="font-bold text-xl text-green-600" id="txtTargetCostYear">1,244,160</div>
-                                        <div class="text-[10px] text-gray-400">บาท</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-end">
-                                    <span class="text-xs text-gray-400">พลังงานไฟฟ้า</span>
-                                    <div class="text-right">
-                                        <div class="font-normal text-sm text-gray-400" id="txtTargetEnergy">276,480</div>
-                                        <div class="text-[10px] text-gray-400">kWh</div>
-                                    </div>
+                                 <div class="flex justify-between">
+                                    <span>Target Power (<span id="infoTargetFreq">40</span>Hz):</span>
+                                    <span class="font-semibold text-green-600" id="infoTargetPower">38.40 kW</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-3 p-4 bg-yellow-50 text-yellow-800 rounded-xl text-sm border border-yellow-100">
-                        <i data-lucide="info" class="flex-shrink-0 mt-0.5 w-4 h-4"></i>
-                        <p>
-                            การคำนวณนี้เป็นการประมาณการทางทฤษฎี (Theoretical Estimation) ตามกฎ Fan Laws โดยสมมติว่าประสิทธิภาพของมอเตอร์และ Inverter คงที่ และโหลดแปรผันตามความเร็วรอบจริง
-                        </p>
+                    <!-- Analysis Dashboard -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Savings Banner -->
+                        <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl shadow-lg p-6 md:p-8 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+                            <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                                <div>
+                                    <h3 class="text-green-100 font-medium mb-1 flex items-center gap-2">
+                                        <i data-lucide="piggy-bank" class="w-5 h-5"></i> ประหยัดค่าไฟได้ (Annual Savings)
+                                    </h3>
+                                    <div class="text-4xl md:text-6xl font-bold tracking-tight">
+                                        <span id="txtSavingYear">1,185,840</span>
+                                        <span class="text-2xl md:text-3xl font-normal opacity-80 ml-2">บาท/ปี</span>
+                                    </div>
+                                    <p class="mt-2 text-green-100 opacity-90">
+                                        ลดลง <span class="font-bold bg-white/20 px-2 py-0.5 rounded" id="txtSavingPct">48.8%</span> เมื่อเทียบกับ Base Line
+                                    </p>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center min-w-[180px]">
+                                    <div class="text-xs text-green-100 uppercase tracking-wider mb-1">พลังงานที่ลดได้</div>
+                                    <div class="text-2xl font-bold" id="txtEnergySaved">263,520</div>
+                                    <div class="text-xs text-green-200">kWh / ปี</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Baseline -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                                 <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-bold text-gray-500">BASELINE (50Hz)</h3>
+                                    <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"><span id="txtBaseFreq">50</span> Hz</span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-sm text-gray-600">ค่าไฟต่อเดือน</span>
+                                        <div class="text-right">
+                                            <div class="font-bold text-base text-gray-800" id="txtBaseCostMonth">202,500</div>
+                                            <div class="text-[10px] text-gray-400">บาท</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end pt-3 border-t border-gray-100">
+                                        <span class="text-sm text-gray-600">ค่าไฟต่อปี</span>
+                                        <div class="text-right">
+                                            <div class="font-bold text-xl text-gray-800" id="txtBaseCostYear">2,430,000</div>
+                                            <div class="text-[10px] text-gray-400">บาท</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs text-gray-400">พลังงานไฟฟ้า</span>
+                                        <div class="text-right">
+                                            <div class="font-normal text-sm text-gray-400" id="txtBaseEnergy">540,000</div>
+                                            <div class="text-[10px] text-gray-400">kWh</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Target -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-green-500 relative">
+                                 <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">แนะนำ</div>
+                                 <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-bold text-green-700">TARGET (<span id="txtTargetFreq">50</span>Hz)</h3>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"><span id="txtTargetFreq2">50</span> Hz</span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-sm text-gray-600">ค่าไฟต่อเดือน</span>
+                                        <div class="text-right">
+                                            <div class="font-bold text-base text-green-600" id="txtTargetCostMonth">103,680</div>
+                                            <div class="text-[10px] text-gray-400">บาท</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end pt-3 border-t border-gray-100">
+                                        <span class="text-sm text-gray-600">ค่าไฟต่อปี</span>
+                                        <div class="text-right">
+                                            <div class="font-bold text-xl text-green-600" id="txtTargetCostYear">1,244,160</div>
+                                            <div class="text-[10px] text-gray-400">บาท</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs text-gray-400">พลังงานไฟฟ้า</span>
+                                        <div class="text-right">
+                                            <div class="font-normal text-sm text-gray-400" id="txtTargetEnergy">276,480</div>
+                                            <div class="text-[10px] text-gray-400">kWh</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-4 bg-yellow-50 text-yellow-800 rounded-xl text-sm border border-yellow-100">
+                            <i data-lucide="info" class="flex-shrink-0 mt-0.5 w-4 h-4"></i>
+                            <p>
+                                การคำนวณนี้เป็นการประมาณการทางทฤษฎี (Theoretical Estimation) ตามกฎ Fan Laws โดยสมมติว่าประสิทธิภาพของมอเตอร์และ Inverter คงที่ และโหลดแปรผันตามความเร็วรอบจริง
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -723,22 +728,26 @@
             
             views.forEach(v => {
                 const el = document.getElementById('view-' + v);
-                if(v === tab) {
-                    el.classList.remove('hidden');
-                    if(v === 'visual') startAnimation();
-                } else {
-                    el.classList.add('hidden');
-                    if(v === 'visual') stopAnimation();
+                if (el) { // Added null check
+                    if(v === tab) {
+                        el.classList.remove('hidden');
+                        if(v === 'visual') startAnimation();
+                    } else {
+                        el.classList.add('hidden');
+                        if(v === 'visual') stopAnimation();
+                    }
                 }
             });
 
             buttons.forEach(b => {
                 const btn = document.getElementById(b);
-                const isSelected = b === 'tab-' + tab;
-                if (isSelected) {
-                    btn.className = "whitespace-nowrap px-4 py-2 rounded-md text-sm font-semibold transition-all shadow-sm bg-white text-blue-600";
-                } else {
-                    btn.className = "whitespace-nowrap px-4 py-2 rounded-md text-sm font-semibold text-slate-500 hover:text-slate-700 transition-all";
+                if (btn) { // Added null check
+                    const isSelected = b === 'tab-' + tab;
+                    if (isSelected) {
+                        btn.className = "whitespace-nowrap px-4 py-2 rounded-md text-sm font-semibold transition-all shadow-sm bg-white text-blue-600";
+                    } else {
+                        btn.className = "whitespace-nowrap px-4 py-2 rounded-md text-sm font-semibold text-slate-500 hover:text-slate-700 transition-all";
+                    }
                 }
             });
         }
@@ -890,6 +899,9 @@
             updateResultCard('Airflow', resAirflow, vfdState.baseAirflow);
             updateResultCard('Pressure', resPressure, vfdState.basePressure);
             updateResultCard('Power', resPower, vfdState.basePower);
+            
+            // Update Bar Unit
+            document.getElementById('resPressureBar').innerText = (resPressure / 100000).toFixed(2);
 
             drawVFDChart(vfdState.baseFreq, vfdState.targetFreq);
 
@@ -941,21 +953,31 @@
 
         function drawVFDChart(base, current) {
             const container = document.getElementById('vfdChartContainer');
+            // Check if container exists and has dimensions
+            if (!container || container.clientWidth === 0) return;
+            
             const width = container.clientWidth;
             const height = container.clientHeight;
             
-            // Simple SVG generation
-            const padding = 20;
-            const w = 100; // viewbox units
-            const h = 100;
+            // Use actual pixel dimensions for sharp rendering and correct aspect ratio
+            const padding = 30;
+            const w = width; 
+            const h = height;
             
+            // Curve logic: Max visualization range is 1.5x base frequency
             const maxVal = base * 1.5;
+            
+            // Scaling functions mapping value to pixel coordinates
             const getX = (val) => padding + (val / maxVal) * (w - 2*padding);
+            // Y axis: normalized 0-1 ratio mapped to height. 
+            // We use 3.5 as max Y ratio to accommodate Power curve (1.5^3 = 3.375)
             const getY = (ratio) => (h - padding) - (ratio / 3.5) * (h - 2*padding);
 
             let path1="", path2="", path3="";
-            for(let i=0; i<=30; i++) {
-                const v = (i/30) * maxVal;
+            // Draw smooth curves with more segments
+            const steps = 50;
+            for(let i=0; i<=steps; i++) {
+                const v = (i/steps) * maxVal;
                 const r = v/base;
                 const x = getX(v);
                 path1 += `${i===0?'M':'L'} ${x},${getY(r)} `;
@@ -966,23 +988,32 @@
             const curX = getX(current);
             const curR = current/base;
             
+            // Generate SVG with dynamic viewbox matching container
             const svg = `
-            <svg viewBox="0 0 ${w} ${h}" class="w-full h-full" style="overflow: visible;">
-                <line x1="${padding}" y1="${getY(1)}" x2="${w-padding}" y2="${getY(1)}" stroke="#e5e7eb" stroke-width="0.5" stroke-dasharray="2" />
-                <text x="${padding}" y="${getY(1)-2}" font-size="3" fill="#9ca3af">Base (100%)</text>
+            <svg viewBox="0 0 ${w} ${h}" class="w-full h-full" style="overflow: visible;" preserveAspectRatio="none">
+                <!-- Grid / Axes -->
+                <line x1="${padding}" y1="${getY(1)}" x2="${w-padding}" y2="${getY(1)}" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4" />
+                <text x="${padding}" y="${getY(1)-5}" font-size="10" fill="#9ca3af" font-family="sans-serif">Base (100%)</text>
                 
-                <line x1="${getX(base)}" y1="${padding}" x2="${getX(base)}" y2="${h-padding}" stroke="#e5e7eb" stroke-width="0.5" />
+                <line x1="${getX(base)}" y1="${padding}" x2="${getX(base)}" y2="${h-padding}" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4" />
                 
-                <path d="${path3}" fill="none" stroke="#ef4444" stroke-width="1.5" />
-                <path d="${path2}" fill="none" stroke="#fb923c" stroke-width="1.5" />
-                <path d="${path1}" fill="none" stroke="#22d3ee" stroke-width="1.5" />
+                <!-- Curves -->
+                <path d="${path3}" fill="none" stroke="#ef4444" stroke-width="2" />
+                <path d="${path2}" fill="none" stroke="#fb923c" stroke-width="2" />
+                <path d="${path1}" fill="none" stroke="#22d3ee" stroke-width="2" />
                 
-                <line x1="${curX}" y1="${padding}" x2="${curX}" y2="${h-padding}" stroke="#3b82f6" stroke-width="0.5" stroke-dasharray="1" opacity="0.5"/>
-                <circle cx="${curX}" cy="${getY(curR)}" r="1.5" fill="#22d3ee" stroke="white" stroke-width="0.5" />
-                <circle cx="${curX}" cy="${getY(curR*curR)}" r="1.5" fill="#fb923c" stroke="white" stroke-width="0.5" />
-                <circle cx="${curX}" cy="${getY(curR*curR*curR)}" r="1.5" fill="#ef4444" stroke="white" stroke-width="0.5" />
+                <!-- Current Position Line -->
+                <line x1="${curX}" y1="${padding}" x2="${curX}" y2="${h-padding}" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4"/>
+                
+                <!-- Intersection Points -->
+                <circle cx="${curX}" cy="${getY(curR)}" r="4" fill="#22d3ee" stroke="white" stroke-width="2" />
+                <circle cx="${curX}" cy="${getY(curR*curR)}" r="4" fill="#fb923c" stroke="white" stroke-width="2" />
+                <circle cx="${curX}" cy="${getY(curR*curR*curR)}" r="4" fill="#ef4444" stroke="white" stroke-width="2" />
 
-                 <text x="${w/2}" y="${h-2}" font-size="3" text-anchor="middle" fill="#6b7280">Frequency (Hz)</text>
+                <!-- Axis Labels -->
+                <line x1="${padding}" y1="${h-padding}" x2="${w-padding}" y2="${h-padding}" stroke="#64748b" stroke-width="1" />
+                <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${h-padding}" stroke="#64748b" stroke-width="1" />
+                <text x="${w/2}" y="${h-10}" font-size="12" text-anchor="middle" fill="#64748b" font-weight="bold">Frequency (Hz)</text>
             </svg>
             `;
             container.innerHTML = svg;
@@ -1143,6 +1174,14 @@
         // Init
         calculateDuct();
         calculateVFD();
+        // Add resize listener for chart
+        window.addEventListener('resize', () => {
+            const vfdView = document.getElementById('view-vfd');
+            if(vfdView && !vfdView.classList.contains('hidden')) {
+                calculateVFD();
+            }
+        });
+        
         // Hide VFD initially
         switchTab('calc');
 
